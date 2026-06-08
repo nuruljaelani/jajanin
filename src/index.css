@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+@theme {
+  --color-acid-green: #D4FF00;
+  --color-charcoal: #1A1A1A;
+  --color-hot-orange: #FF5C00;
+  --color-off-white: #F4F4F0;
+  
+  --font-sans: "Inter", "Helvetica", "Arial", sans-serif;
+  --font-display: "Clash Display", "Inter", sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-charcoal text-off-white font-sans antialiased;
+  }
+}
+
+@layer utilities {
+  .neo-brutalism {
+    @apply border-2 border-off-white shadow-[4px_4px_0px_0px_rgba(244,244,240,1)];
+  }
+  .neo-brutalism-orange {
+    @apply border-2 border-hot-orange shadow-[4px_4px_0px_0px_rgba(255,92,0,1)];
+  }
+  .neo-brutalism-green {
+    @apply border-2 border-acid-green shadow-[4px_4px_0px_0px_rgba(212,255,0,1)];
+  }
+  .neo-brutalism:active,
+  .neo-brutalism-orange:active,
+  .neo-brutalism-green:active {
+    @apply translate-x-[4px] translate-y-[4px] shadow-none;
+  }
+}
