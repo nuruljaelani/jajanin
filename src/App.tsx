@@ -118,7 +118,7 @@ function App() {
               <span className="font-bold text-xl">@</span>
             </div>
             <div>
-              <p className="font-bold">@jajanin</p>
+              <p className="font-bold">@jajanin_terus</p>
               <p className="text-sm opacity-80">Tag kita pas lagi jajan!</p>
             </div>
           </div>
