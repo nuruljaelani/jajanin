@@ -1,6 +1,6 @@
 import type { CartItem } from '../store/useCartStore';
 
-const WA_NUMBER = '628503840608'; // User provided number
+const WA_NUMBER = '6285603840608'; // User provided number
 
 export const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat('id-ID', {
