@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, Plus, Minus, MapPin, Coffee, Cookie } from 'lucide-react';
+import { ShoppingBag, Plus, Minus, MapPin, Coffee, Cookie, Phone,  } from 'lucide-react';
 import { products } from './data/products';
 import { useCartStore } from './store/useCartStore';
 import { formatCurrency, generateWaLink } from './utils/whatsapp';
@@ -59,43 +59,61 @@ function App() {
       <main className="max-w-md mx-auto p-4 pt-8">
         <div className="grid grid-cols-2 gap-4">
           <AnimatePresence>
-            {filteredProducts.map((product) => (
-              <motion.div
-                key={product.id}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.2 }}
-                className="bg-off-white text-charcoal flex flex-col neo-brutalism"
-              >
-                <div className="aspect-square border-b-2 border-charcoal overflow-hidden bg-charcoal">
-                  <img 
-                    src={product.image} 
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="p-3 flex flex-col flex-grow">
-                  <div className="flex items-start justify-between gap-1 mb-1">
-                    <h3 className="font-display font-bold text-lg leading-tight uppercase">{product.name}</h3>
-                    {product.category === 'makanan' ? <Cookie size={16} className="text-hot-orange flex-shrink-0 mt-1" /> : <Coffee size={16} className="text-acid-green flex-shrink-0 mt-1" />}
+            {filteredProducts.map((product) => {
+              const isProductReady = product.isReady !== false;
+              return (
+                <motion.div
+                  key={product.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.2 }}
+                  className={`bg-off-white text-charcoal flex flex-col neo-brutalism relative transition-all duration-300 ${
+                    isProductReady ? '' : 'opacity-65'
+                  }`}
+                >
+                  <div className="aspect-square border-b-2 border-charcoal overflow-hidden bg-charcoal relative">
+                    <img 
+                      src={product.image} 
+                      alt={product.name}
+                      className={`w-full h-full object-cover transition-all duration-300 ${
+                        isProductReady ? '' : 'filter blur-[1.5px] grayscale opacity-50'
+                      }`}
+                    />
+                    {!isProductReady && (
+                      <div className="absolute top-2 left-2 bg-charcoal text-off-white font-display font-bold uppercase tracking-wider text-[10px] px-2 py-0.5 border border-off-white shadow-[2px_2px_0px_0px_rgba(26,26,26,1)] z-10 animate-pulse">
+                        Tidak Ready
+                      </div>
+                    )}
                   </div>
-                  <p className="text-xs text-charcoal/70 mb-3 flex-grow">{product.description}</p>
-                  
-                  <div className="flex flex-col gap-2 mt-auto">
-                    <span className="font-bold text-hot-orange">{formatCurrency(product.price)}</span>
+                  <div className="p-3 flex flex-col flex-grow">
+                    <div className="flex items-start justify-between gap-1 mb-1">
+                      <h3 className="font-display font-bold text-lg leading-tight uppercase">{product.name}</h3>
+                      {product.category === 'makanan' ? <Cookie size={16} className="text-hot-orange flex-shrink-0 mt-1" /> : <Coffee size={16} className="text-acid-green flex-shrink-0 mt-1" />}
+                    </div>
+                    <p className="text-xs text-charcoal/70 mb-3 flex-grow">{product.description}</p>
                     
-                    <button
-                      onClick={() => addItem(product)}
-                      className="w-full bg-charcoal text-acid-green font-bold py-2 border-2 border-charcoal uppercase tracking-wider text-sm active:bg-charcoal/90 transition-colors flex items-center justify-center gap-2"
-                    >
-                      <Plus size={16} /> Tambah
-                    </button>
+                    <div className="flex flex-col gap-2 mt-auto">
+                      <span className="font-bold text-hot-orange">{formatCurrency(product.price)}</span>
+                      
+                      <button
+                        disabled={!isProductReady}
+                        onClick={() => addItem(product)}
+                        className={`w-full font-bold py-2 border-2 uppercase tracking-wider text-sm flex items-center justify-center gap-2 transition-colors ${
+                          isProductReady
+                            ? 'bg-charcoal text-acid-green border-charcoal active:bg-charcoal/90 cursor-pointer'
+                            : 'bg-charcoal/20 text-charcoal/40 border-charcoal/10 cursor-not-allowed'
+                        }`}
+                      >
+                        {isProductReady ? <Plus size={16} /> : null}
+                        {isProductReady ? 'Tambah' : 'Tidak Ready'}
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </AnimatePresence>
         </div>
       </main>
@@ -122,6 +140,15 @@ function App() {
               <p className="text-sm opacity-80">Tag kita pas lagi jajan!</p>
             </div>
           </div>
+          <div className="flex items-start gap-3">
+            <div className="bg-hot-orange p-2 neo-brutalism-orange inline-block">
+              <Phone className="text-off-white" size={24} />
+            </div>
+            <div>
+              <p className="font-bold">085603840608</p>
+              <p className="text-sm opacity-80">WhatsApp</p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -145,16 +172,26 @@ function App() {
               </div>
               
               <div className="max-h-32 overflow-y-auto mb-4 border-y border-off-white/20 py-2 scrollbar-hide space-y-2">
-                {items.map(item => (
-                  <div key={item.id} className="flex justify-between items-center text-sm text-off-white">
-                    <span className="truncate pr-2">{item.name}</span>
-                    <div className="flex items-center gap-3 bg-charcoal rounded-full px-2 py-1">
-                      <button onClick={() => decrementItem(item.id)} className="text-hot-orange"><Minus size={14} /></button>
-                      <span className="font-bold w-4 text-center">{item.quantity}</span>
-                      <button onClick={() => addItem(item)} className="text-acid-green"><Plus size={14} /></button>
+                {items.map(item => {
+                  const originalProduct = products.find(p => p.id === item.id);
+                  const isItemReady = originalProduct ? originalProduct.isReady !== false : true;
+                  return (
+                    <div key={item.id} className="flex justify-between items-center text-sm text-off-white">
+                      <span className="truncate pr-2">{item.name}</span>
+                      <div className="flex items-center gap-3 bg-charcoal rounded-full px-2 py-1">
+                        <button onClick={() => decrementItem(item.id)} className="text-hot-orange cursor-pointer"><Minus size={14} /></button>
+                        <span className="font-bold w-4 text-center">{item.quantity}</span>
+                        <button
+                          disabled={!isItemReady}
+                          onClick={() => addItem(item)}
+                          className={`${isItemReady ? 'text-acid-green cursor-pointer' : 'text-acid-green/30 cursor-not-allowed'}`}
+                        >
+                          <Plus size={14} />
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               <a 
