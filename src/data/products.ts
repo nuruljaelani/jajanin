@@ -51,4 +51,28 @@ export const products: Product[] = [
     image: '/products/mi-ayam.png',
     category: 'makanan'
   },
+  {
+    id: '6',
+    name: 'Donat Coklat Kacang',
+    description: 'Donat empuk dengan topping coklat dan kacang.',
+    price: 2000,
+    image: '/products/donat-kacang.jpeg',
+    category: 'makanan'
+  },
+  {
+    id: '7',
+    name: 'Donat Meses Coklat',
+    description: 'Donat empuk dengan meses coklat.',
+    price: 2000,
+    image: '/products/donat-meses.jpeg',
+    category: 'makanan'
+  },
+  {
+    id: '8',
+    name: 'Soto Ayam',
+    description: 'Soto ayam dengan isian daging ayam, telur, dan sayuran.',
+    price: 8000,
+    image: '/products/soto.jpeg',
+    category: 'makanan'
+  }
 ];
